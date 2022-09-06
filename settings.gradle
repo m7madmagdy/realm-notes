@@ -4,7 +4,6 @@ pluginManagement {
         google()
         mavenCentral()
     }
-
 }
 
 
@@ -13,6 +12,7 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+
     }
 }
 rootProject.name = "Realm Notes"

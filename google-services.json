@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "903379045922",
+    "project_id": "realm-notes",
+    "storage_bucket": "realm-notes.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:903379045922:android:9e376a9a7ee71c3c2dc47b",
+        "android_client_info": {
+          "package_name": "com.example.realmnotes"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "903379045922-3us2lult0g9d9msosj6ii0c07vs5n7sf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA8fGEJoyBu-rr8dxo2W2HJIGPYhImBZQM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "903379045922-3us2lult0g9d9msosj6ii0c07vs5n7sf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,4 +1,4 @@
-package com.example.realmnotes.view.viewModel
+package com.example.realmnotes.ui.viewModel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -14,19 +14,17 @@ class MainViewModel : ViewModel() {
     val allNotes: LiveData<List<Note>>
         get() = getAllNotes()
 
-    fun addNote(noteTitle: String, noteDescription: String) {
-        realm.executeTransaction { r: Realm ->
-            val note = r.createObject(Note::class.java, UUID.randomUUID().toString())
+    fun addNote(noteTitle: String, noteDes: String) {
+        realm.executeTransaction { realm ->
+            val note = realm.createObject(Note::class.java, UUID.randomUUID().toString())
             note.title = noteTitle
-            note.description = noteDescription
+            note.description = noteDes
             realm.insertOrUpdate(note)
         }
     }
 
     fun updateNote(id: String, noteTitle: String, noteDesc: String) {
-        val target = realm.where(Note::class.java)
-            .equalTo("id", id)
-            .findFirst()
+        val target = realm.where(Note::class.java).equalTo("id", id).findFirst()
 
         realm.executeTransaction {
             target?.title = noteTitle
@@ -39,18 +37,14 @@ class MainViewModel : ViewModel() {
 
 
     fun deleteNote(id: String) {
-        val notes = realm.where(Note::class.java)
-            .equalTo("id", id)
-            .findFirst()
-
         realm.executeTransaction {
-            notes?.deleteFromRealm()
+            realm.where(Note::class.java).equalTo("id", id).findFirst()?.deleteFromRealm()
         }
     }
 
     fun deleteAllNotes() {
-        realm.executeTransaction { r: Realm ->
-            r.delete(Note::class.java)
+        realm.executeTransaction { realm ->
+            realm.deleteAll()
         }
     }
 

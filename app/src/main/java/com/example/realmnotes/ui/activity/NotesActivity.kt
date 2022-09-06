@@ -1,13 +1,20 @@
-package com.example.realmnotes.view.activity
+package com.example.realmnotes.ui.activity
 
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.util.Log
 import android.view.*
+import android.view.accessibility.AccessibilityEvent
+import android.widget.AutoCompleteTextView
 import android.widget.EditText
+import android.widget.SearchView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -15,8 +22,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.realmnotes.R
 import com.example.realmnotes.data.Note
 import com.example.realmnotes.databinding.ActivityMainBinding
-import com.example.realmnotes.view.adapter.NotesAdapter
-import com.example.realmnotes.view.viewModel.MainViewModel
+import com.example.realmnotes.databinding.UpdateDialogBinding
+import com.example.realmnotes.ui.adapter.NotesAdapter
+import com.example.realmnotes.ui.viewModel.MainViewModel
+import java.util.concurrent.TimeUnit
 
 class NotesActivity : AppCompatActivity() {
     private lateinit var notesAdapter: NotesAdapter
@@ -24,7 +33,6 @@ class NotesActivity : AppCompatActivity() {
     private var _binding: ActivityMainBinding? = null
     private val binding get() = _binding!!
     private var id: String? = ""
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -71,12 +79,15 @@ class NotesActivity : AppCompatActivity() {
     }
 
     private fun initUserClicks() {
-        binding.floatingActionButton.setOnClickListener {
+        binding.addNoteButton.setOnClickListener {
             startActivity(Intent(this, AddNoteActivity::class.java))
         }
+        getAllNotes()
+    }
 
-        viewModel.allNotes.observe(this) { allNotes ->
-            notesAdapter.submitList(allNotes)
+    private fun getAllNotes() {
+        viewModel.allNotes.observe(this) {
+            notesAdapter.submitList(it)
             binding.notesRecyclerview.adapter = notesAdapter
         }
     }
@@ -91,18 +102,17 @@ class NotesActivity : AppCompatActivity() {
 
     @SuppressLint("NotifyDataSetChanged")
     private fun createUpdateDialog(note: Note) {
-        val viewGroup = findViewById<ViewGroup>(android.R.id.content)
-        val dialogView: View =
-            LayoutInflater.from(this).inflate(R.layout.update_dialog, viewGroup, false)
+        val dialogView = UpdateDialogBinding.inflate(layoutInflater)
+
         val builder = AlertDialog.Builder(this)
 
-        val titleEdt: EditText = dialogView.findViewById(R.id.titleEditText_update)
-        val descriptionEdt: EditText = dialogView.findViewById(R.id.descriptionEditText_update)
+        val titleEdt = dialogView.titleEdtUpdate
+        val descriptionEdt = dialogView.descriptionEdtUpdate
 
         titleEdt.setText(note.title)
         descriptionEdt.setText(note.description)
 
-        builder.setView(dialogView)
+        builder.setView(dialogView.root)
         builder.setTitle("Update Note")
         builder.setPositiveButton("Update") { _, _ ->
             viewModel.updateNote(
@@ -118,18 +128,22 @@ class NotesActivity : AppCompatActivity() {
         builder.show()
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
         val inflater = menuInflater
-        inflater.inflate(R.menu.delete_all, menu)
-        return true
+        inflater.inflate(R.menu.toolbar_menu, menu)
+        return super.onCreateOptionsMenu(menu)
     }
 
     @SuppressLint("NotifyDataSetChanged")
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.deleteAll) {
-            viewModel.deleteAllNotes()
-            notesAdapter.notifyDataSetChanged()
-            return true
+        when (item.itemId) {
+            R.id.deleteAll -> {
+                viewModel.deleteAllNotes()
+                notesAdapter.notifyDataSetChanged()
+            }
+            R.id.action_search -> {
+                Toast.makeText(this, "Search", Toast.LENGTH_SHORT).show()
+            }
         }
         return super.onOptionsItemSelected(item)
     }

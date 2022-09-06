@@ -4,4 +4,6 @@
     <string name="title">Title</string>
     <string name="description">Description</string>
     <string name="save">Save</string>
+    <string name="search">Search</string>
+    <string name="search_hint">search</string>
 </resources>

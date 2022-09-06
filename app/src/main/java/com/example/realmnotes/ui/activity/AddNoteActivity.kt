@@ -1,11 +1,11 @@
-package com.example.realmnotes.view.activity
+package com.example.realmnotes.ui.activity
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.lifecycle.ViewModelProvider
 import com.example.realmnotes.databinding.ActivityAddNoteBinding
-import com.example.realmnotes.view.viewModel.MainViewModel
+import com.example.realmnotes.ui.viewModel.MainViewModel
 
 class AddNoteActivity : AppCompatActivity() {
 

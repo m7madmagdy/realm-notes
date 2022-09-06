@@ -1,4 +1,4 @@
-package com.example.realmnotes.view.adapter
+package com.example.realmnotes.ui.adapter
 
 import android.view.LayoutInflater
 import android.view.View
@@ -12,8 +12,7 @@ import com.example.realmnotes.databinding.NoteCardBinding
 class NotesAdapter(
     private val onItemClicked: (v: View, note: Note) -> Unit,
     private val onSwipe: OnSwiper
-) :
-    ListAdapter<Note, NotesAdapter.MyViewHolder>(MyDiffUtil) {
+) : ListAdapter<Note, NotesAdapter.MyViewHolder>(MyDiffUtil) {
 
     object MyDiffUtil : DiffUtil.ItemCallback<Note>() {
         override fun areItemsTheSame(oldItem: Note, newItem: Note): Boolean {
